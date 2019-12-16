@@ -23,10 +23,10 @@ function main(){
 	if [ $(( RANDOM%2 )) -eq 1 ]
 	then
 		player=X
-		echo "X is Assign to user "
+		echo "X is Assign to user and player play first"
 	else
 		player=O
-      echo "O is Assign to user"
+      echo "O is Assign to user and computer play first"
 	fi
 
 }
