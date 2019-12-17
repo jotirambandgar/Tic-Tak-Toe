@@ -1,8 +1,10 @@
 #!/bin/bash -x
-gameBoard=( "1" "2" "3" "4" "5" "6" "7" "8" "9" );
-
+declare -a gameBoard
+function resetBoard(){
+	gameBoard=( "|1" "2" "3" "|4" "5" "6" "|7" "8" "9" );
+}
 function getGameBoard(){
-	 echo "_ _ _ _ _ _"
+	 echo " _ _ _ _ _ _"
 	for (( i=0; i<${#gameBoard[@]}; i++ ))
 	do
 		echo -n "${gameBoard[$i]}  |"
@@ -18,6 +20,10 @@ function getGameBoard(){
 	done
 }
 
+#function winnerChecker(){
+#	if [${gameBoard[0]}]
+#}
+
 function selectCell(){
 	if [ $player == "X" ]
 	then
@@ -29,6 +35,7 @@ function selectCell(){
 
 function main(){
 	echo "Welcome to Tic tac toe"
+	resetBoard
 	getGameBoard
 	if [ $(( RANDOM%2 )) -eq 1 ]
 	then
