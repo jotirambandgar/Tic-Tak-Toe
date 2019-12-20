@@ -89,7 +89,7 @@ function selectCell(){
       then
          selectCell
 		 fi
-			echo "computer mark at position : $cell & turn : $turn"
+			echo "computer mark at position : $cell "
 			gameBoard[$(( $cell - 1 ))]=$computer
 
 	fi
