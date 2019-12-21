@@ -1,4 +1,4 @@
-#!/bin/bash -xv
+#!/bin/bash -x
 
 declare -a gameBoard
 turn=""
@@ -67,6 +67,123 @@ function winnerChecker(){
 	echo $winningFlag $1
 }
 
+
+function blockOpponent(){
+
+	blockStatus=0
+	for (( i=0 ; i<=3 ; i++ ))
+	do
+		if [ $i -eq 0 ]
+		then
+			#row
+			if [ ${gameBoard[$i]} == $player ] && [ ${gameBoard[$(( $i + 1 ))]} == $player ] && [ ${gameBoard[$(( $i + 2 ))]} != $computer ]
+			then
+				gameBoard[$(( $i + 2 ))]=$computer
+				blockStatus=1
+				break
+			fi
+
+			if [ ${gameBoard[ $(( $i + 1 )) ]} == $player ] && [ ${gameBoard[ $(( $i + 2 ))]} == $player ] && [ ${gameBoard[ $i]} != $computer ]
+			then
+				gameBoard[$i]=$computer
+				blockStatus=1
+				break
+			fi
+
+			if [ ${gameBoard[$i]} == $player ] && [ ${gameBoard[ $(( $i + 2 ))]} == $player ] && [ ${gameBoard[$(( $i + 1 ))]} != $computer ]
+         then
+            gameBoard[$(( $i + 1 ))]=$computer
+				blockStatus=1
+				break
+         fi
+
+			if [ ${gameBoard[$(( $i + 4 ))]} == $player ] && [ ${gameBoard[$(( $i + 8 ))]} == $player ] && [ ${gameBoard[$i]} != $computer ]
+			then
+				gameBoard[$i]=$computer
+				blockStatus=1
+				break
+			fi
+
+			if [ ${gameBoard[$i]} == $player ] && [ ${gameBoard[$(( $i + 8 ))]} == $player ] && [ ${gameBoard[$(( $i + 4 ))]} != $computer ]
+         then
+            gameBoard[$(($i + 4 ))]=$computer
+            blockStatus=1
+				break
+         fi
+
+			if [ ${gameBoard[$i]} == $player ] && [ ${gameBoard[$(($i + 4 ))]} == $player ] && [ ${gameBoard[$(( $i + 8 ))]} != $computer ]
+         then
+            gameBoard[$(($i + 8))]=$computer
+            blockStatus=1
+				break
+         fi
+		fi
+
+		if [ $i -eq 2 ]
+		then
+			if [ $gameBoard[$(($i + 2))] == $player ] && [ $gameBoard[$(( $i + 4 ))] == $player ]  && [ ${gameBoard[$i]} != $computer ]
+			then
+				gameBoard[$i]=$computer
+            blockStatus=1
+				break
+			elif [ $gameBoard[$(($i))] == $player ] && [ $gameBoard[$(( $i + 4 ))] == $player ] && [ ${gameBoard[$(( $i + 2 ))]} != $computer ]
+			then
+				gameBoard[$(($i + 2))]=$computer
+            blockStatus=1
+				break
+			elif [ $gameBoard[$(( $i ))] == $player ] && [ $gameBoard[$(( $i +2 ))] == $player ] && [ ${gameBoard[$(( $i + 4 ))]} != $computer ]
+			then
+				gameBoard[$(($i + 4))]=$computer
+            blockStatus=1
+				break
+			fi
+		fi
+
+		if [ ${gameBoard[$i]} == $player ] && [ ${gameBoard[$(( $i + 3 )) ]} == $player ] && [ ${gameBoard[$(( $i + 6 ))]} != $computer ]
+		then
+         blockStatus=1
+			gameBoard[$(($i + 6))]=$computer
+			break
+		elif [ ${gameBoard[$i]} == $player ] && [ ${gameBoard[$(( $i + 6 )) ]} == $player ] && [ ${gameBoard[$(( $i + 3 ))]} != $computer ]
+		then
+         blockStatus=1
+			gameBoard[$(($i + 3))]=$computer
+			break
+		elif [ ${gameBoard[$(( $i + 3 ))]} == $player ] && [ ${gameBoard[$(( $i + 6 )) ]} == $player ] && [ ${gameBoard[$i]} != $computer ]
+		then
+         blockStatus=1
+			gameBoard[$i]=$computer
+			break
+		fi
+	done
+
+	if [ $blockStatus -eq 0 ]
+	then
+		for (( l=0 ; l <= 6 ; l+=3 ))
+		do
+			if [ ${gameBoard[$(($l))]} == $player ] && [ ${gameBoard[$(($l + 1))]} == $player ] && [ ${gameBoard[$(( $l + 2 ))]} != $computer ]
+			then
+         	blockStatus=1
+				gameBoard[$(($l + 2))]=$computer
+				break
+			elif [ ${gameBoard[$l]} == $player ] && [ ${gameBoard[$(($l + 2))]} == $player ] && [ ${gameBoard[$(( $l + 1 ))]} != $computer ]
+			then
+         	blockStatus=1
+				gameBoard[$(($l + 1))]=$computer	
+				break
+
+			elif [ ${gameBoard[$(($l + 1))]} == $player ] && [ ${gameBoard[$(($l + 2))]} == $player ] && [ ${gameBoard[$i]} != $computer ]
+			then
+         	blockStatus=1
+				gameBoard[$l]=$computer
+				break
+
+			fi
+		done
+	fi
+
+}
+
 function selectCell(){
 
 	if [ $turn == "P" ]
@@ -80,52 +197,48 @@ function selectCell(){
 		gameBoard[$(( $choice - 1 ))]=$player
 
 	else
-
-
-		 cell=$(( RANDOM % 9 + 1 ))
-
-
-		if [ ${gameBoard[$(( $cell - 1 ))]} == "X" ] || [ ${gameBoard[$(( $cell - 1 ))]} == "O" ]
-      then
-         selectCell
-		 fi
-			echo "computer mark at position : $cell "
-			gameBoard[$(( $cell - 1 ))]=$computer
-
+		blockOpponent
+		if [ $blockStatus -eq 0 ]
+		then
+			cell=$(( RANDOM % 9 + 1 ))
+			if [ ${gameBoard[$(( $cell - 1 ))]} == "X" ] || [ ${gameBoard[$(( $cell - 1 ))]} == "O" ]
+      	then
+         	selectCell
+		 	fi
+				echo "computer mark at position : $cell "
+				gameBoard[$(( $cell - 1 ))]=$computer
+		fi
 	fi
 
 }
 
-function toss() {
+function toss(){
 
 	echo "Welcome to Tic tac toe"
 	resetBoard
 
-
 	if [ $(( RANDOM%2 )) -eq 1 ]
 	then
-
 		player="X"
 		computer="O"
 		turn="P"
 		echo "X is Assign to user and player play first"
-
 	else
-
 		player="O"
 		computer="X"
 		turn="C"
       echo "O is Assign to user and computer play first"
-
 	fi
+
 }
 
 function startGame(){
 
 	while [ $counter -ne 9 ] && [ $winningFlag -ne 1 ]
 	do
+      selectCell
 		getGameBoard
-		selectCell
+		#selectCell
 
 		if [	$turn == "P" ]
 		then
@@ -156,6 +269,7 @@ function startGame(){
 
 	if [ $counter -ge 9 ] && [ $winningFlag -eq 0 ]
 	then
+		getGameBoard
 		echo "game tie"
 	fi
 
