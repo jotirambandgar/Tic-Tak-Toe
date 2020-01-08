@@ -92,7 +92,7 @@ function blockOpponent(){
 
 			if [ ${gameBoard[$i]} == $player ] && [ ${gameBoard[ $(( $i + 2 ))]} == $player ] && [ ${gameBoard[$(( $i + 1 ))]} != $computer ]
          then
-            gameBoard[$(( $i + 1 ))]=$computer
+		 		gameBoard[$(( $i + 1 ))]=$computer
 				blockStatus=1
 				break
          fi
@@ -105,18 +105,18 @@ function blockOpponent(){
 			fi
 
 			if [ ${gameBoard[$i]} == $player ] && [ ${gameBoard[$(( $i + 8 ))]} == $player ] && [ ${gameBoard[$(( $i + 4 ))]} != $computer ]
-         then
-            gameBoard[$(($i + 4 ))]=$computer
-            blockStatus=1
+         	then
+            	gameBoard[$(($i + 4 ))]=$computer
+            	blockStatus=1
 				break
-         fi
+         	fi
 
 			if [ ${gameBoard[$i]} == $player ] && [ ${gameBoard[$(($i + 4 ))]} == $player ] && [ ${gameBoard[$(( $i + 8 ))]} != $computer ]
-         then
-            gameBoard[$(($i + 8))]=$computer
-            blockStatus=1
+         	then
+            	gameBoard[$(($i + 8))]=$computer
+            	blockStatus=1
 				break
-         fi
+         	fi
 		fi
 
 		if [ $i -eq 2 ]
@@ -124,34 +124,34 @@ function blockOpponent(){
 			if [ $gameBoard[$(($i + 2))] == $player ] && [ $gameBoard[$(( $i + 4 ))] == $player ]  && [ ${gameBoard[$i]} != $computer ]
 			then
 				gameBoard[$i]=$computer
-            blockStatus=1
+            	blockStatus=1
 				break
 			elif [ $gameBoard[$(($i))] == $player ] && [ $gameBoard[$(( $i + 4 ))] == $player ] && [ ${gameBoard[$(( $i + 2 ))]} != $computer ]
 			then
 				gameBoard[$(($i + 2))]=$computer
-            blockStatus=1
+            	blockStatus=1
 				break
 			elif [ $gameBoard[$(( $i ))] == $player ] && [ $gameBoard[$(( $i +2 ))] == $player ] && [ ${gameBoard[$(( $i + 4 ))]} != $computer ]
 			then
 				gameBoard[$(($i + 4))]=$computer
-            blockStatus=1
+            	blockStatus=1
 				break
 			fi
 		fi
 
 		if [ ${gameBoard[$i]} == $player ] && [ ${gameBoard[$(( $i + 3 )) ]} == $player ] && [ ${gameBoard[$(( $i + 6 ))]} != $computer ]
 		then
-         blockStatus=1
+         	blockStatus=1
 			gameBoard[$(($i + 6))]=$computer
 			break
 		elif [ ${gameBoard[$i]} == $player ] && [ ${gameBoard[$(( $i + 6 )) ]} == $player ] && [ ${gameBoard[$(( $i + 3 ))]} != $computer ]
 		then
-         blockStatus=1
+         	blockStatus=1
 			gameBoard[$(($i + 3))]=$computer
 			break
 		elif [ ${gameBoard[$(( $i + 3 ))]} == $player ] && [ ${gameBoard[$(( $i + 6 )) ]} == $player ] && [ ${gameBoard[$i]} != $computer ]
 		then
-         blockStatus=1
+         	blockStatus=1
 			gameBoard[$i]=$computer
 			break
 		fi
@@ -163,18 +163,18 @@ function blockOpponent(){
 		do
 			if [ ${gameBoard[$(($l))]} == $player ] && [ ${gameBoard[$(($l + 1))]} == $player ] && [ ${gameBoard[$(( $l + 2 ))]} != $computer ]
 			then
-         	blockStatus=1
+         		blockStatus=1
 				gameBoard[$(($l + 2))]=$computer
 				break
 			elif [ ${gameBoard[$l]} == $player ] && [ ${gameBoard[$(($l + 2))]} == $player ] && [ ${gameBoard[$(( $l + 1 ))]} != $computer ]
 			then
-         	blockStatus=1
+         		blockStatus=1
 				gameBoard[$(($l + 1))]=$computer	
 				break
 
 			elif [ ${gameBoard[$(($l + 1))]} == $player ] && [ ${gameBoard[$(($l + 2))]} == $player ] && [ ${gameBoard[$i]} != $computer ]
 			then
-         	blockStatus=1
+         		blockStatus=1
 				gameBoard[$l]=$computer
 				break
 
@@ -202,11 +202,11 @@ function selectCell(){
 		then
 			cell=$(( RANDOM % 9 + 1 ))
 			if [ ${gameBoard[$(( $cell - 1 ))]} == "X" ] || [ ${gameBoard[$(( $cell - 1 ))]} == "O" ]
-      	then
-         	selectCell
+      		then
+         		selectCell
 		 	fi
-				echo "computer mark at position : $cell "
-				gameBoard[$(( $cell - 1 ))]=$computer
+			echo "computer mark at position : $cell "
+			gameBoard[$(( $cell - 1 ))]=$computer
 		fi
 	fi
 
@@ -227,7 +227,7 @@ function toss(){
 		player="O"
 		computer="X"
 		turn="C"
-      echo "O is Assign to user and computer play first"
+      	echo "O is Assign to user and computer play first"
 	fi
 
 }
@@ -236,7 +236,7 @@ function startGame(){
 
 	while [ $counter -ne 9 ] && [ $winningFlag -ne 1 ]
 	do
-      selectCell
+      	selectCell
 		getGameBoard
 		#selectCell
 
@@ -254,9 +254,9 @@ function startGame(){
 			echo -e "computer turn\n"
 			winnerChecker $computer
 			if [ $winningFlag -eq 1 ]
-         then
-            echo "computer win"
-         fi
+         	then
+            	echo "computer win"
+         	fi
 
 
 			counter=$(( $counter + 1 ))
